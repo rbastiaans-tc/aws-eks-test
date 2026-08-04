@@ -20,7 +20,7 @@ locals {
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
 
   tags = {
-    Project     = local.tenant
+    Tenant      = local.tenant
     Environment = "${var.environment}"
   }
 }
