@@ -1,30 +1,3 @@
-## Install OpenTofu
-#
-#```
-#brew install opentofu
-#```
-#
-## Install aws-cli
-#```
-#curl -fsSL https://awscli.amazonaws.com/v2/install.sh | bash
-#export PATH=$PATH:$HOME/.local/bin
-#```
-#
-## Install KubeCTL
-#
-#```
-#curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.36.2/2026-07-05/bin/darwin/amd64/kubectl
-#```
-#
-## Download Tofu providers
-#```
-#tofu init
-#```
-## Plan
-#
-#```
-#```
-
 provider "aws" {
   region = local.region
 }
@@ -47,7 +20,7 @@ locals {
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
 
   tags = {
-    Name        = local.name
+    Project     = local.name
     Environment = "${var.environment}"
   }
 }
@@ -78,13 +51,15 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 6.0"
 
-  #name = local.name
   name = "${local.name}-vpc"
   cidr = local.vpc_cidr
 
   azs             = local.azs
   private_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 4, k)]
   public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 48)]
+
+  private_subnet_names = [for k, v in local.azs : "${local.name}-subnet-${v}-private"]
+  public_subnet_names  = [for k, v in local.azs : "${local.name}-subnet-${v}-public"]
 
   enable_nat_gateway = true
   single_nat_gateway = true
