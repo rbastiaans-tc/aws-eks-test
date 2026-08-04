@@ -1,4 +1,4 @@
-variable "name" {
+variable "tenant" {
   type    = string
   default = null
 }

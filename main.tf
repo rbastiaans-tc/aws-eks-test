@@ -11,7 +11,7 @@ data "aws_availability_zones" "available" {
 }
 
 locals {
-  name               = var.name
+  tenant             = var.tenant
   kubernetes_version = var.kubernetes_version
   region             = var.region
 
@@ -20,7 +20,7 @@ locals {
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
 
   tags = {
-    Project     = local.name
+    Project     = local.tenant
     Environment = "${var.environment}"
   }
 }
@@ -29,7 +29,7 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 21.0"
 
-  name                   = "${local.name}-eks"
+  name                   = "${local.tenant}-eks"
   kubernetes_version     = local.kubernetes_version
 
   #endpoint_public_access = true
@@ -53,15 +53,15 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 6.0"
 
-  name = "${local.name}-vpc"
+  name = "${local.tenant}-vpc"
   cidr = local.vpc_cidr
 
   azs             = local.azs
   private_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 4, k)]
   public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 48)]
 
-  private_subnet_names = [for k, v in local.azs : "${local.name}-subnet-${v}-private"]
-  public_subnet_names  = [for k, v in local.azs : "${local.name}-subnet-${v}-public"]
+  private_subnet_names = [for k, v in local.azs : "${local.tenant}-subnet-${v}-private"]
+  public_subnet_names  = [for k, v in local.azs : "${local.tenant}-subnet-${v}-public"]
 
   enable_nat_gateway = true
   single_nat_gateway = true
