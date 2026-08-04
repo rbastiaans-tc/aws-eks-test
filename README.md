@@ -2,6 +2,7 @@
 
 Modified from:
 * https://github.com/terraform-aws-modules/terraform-aws-eks/tree/master/examples/eks-auto-mode
+
 Documentation:
 * https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest
 
@@ -22,6 +23,14 @@ export PATH=$PATH:$HOME/.local/bin
 
 ```
 curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.36.2/2026-07-05/bin/darwin/amd64/kubectl
+```
+
+## AWS credentials
+
+```
+export AWS_ACCESS_KEY_ID="xxxx"
+export AWS_SECRET_ACCESS_KEY="xxx"
+export AWS_SESSION_TOKEN="xxx"
 ```
 
 ## Init
