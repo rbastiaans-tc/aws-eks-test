@@ -155,7 +155,7 @@ NAME                TYPE           CLUSTER-IP       EXTERNAL-IP                 
 hello-web-service   LoadBalancer   172.20.243.167   k8s-default-helloweb-ccbe379d0d-92d416c06b3a3a7f.elb.us-east-2.amazonaws.com   80:31208/TCP   3m17s
 ```
 
-Goto: http://<EXTERNAL-IP>
+Goto: `http://<EXTERNAL-IP>`
 
 ## Run web app with Application Load Balancer (auto created)
 
@@ -164,4 +164,4 @@ $ kubectl apply -f hello-world-alb.yaml
 $ kubectl get ingress hello-web-ingress
 ```
 
-Goto: http://<ADDRESS>
+Goto: `http://<ADDRESS>`
