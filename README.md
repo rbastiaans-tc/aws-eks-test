@@ -64,6 +64,86 @@ tofu plan -var-file=environments/sandbox-rbastiaans-test.tfvars -destroy -out=tf
 tofu apply "tfplandestroy"
 ```
 
+## Add cluster to KubeCTL config
+
+```
+aws eks --region $(tofu output -raw region) update-kubeconfig \
+    --name $(tofu output -raw cluster_name)
+```
+
+## Verify Kubernetes connectivity
+
+```
+kubectl cluster-info
+```
+
+## Show nodes (pools)
+
+```
+kubectl get nodepools
+kubectl get nodes
+```
+
+## Show nodes zones
+
+```
+kubectl get nodes -L topology.kubernetes.io/zone
+```
+
+## Show nodes cpu, memory and zones
+
+```
+kubectl get nodes -L eks.amazonaws.com/instance-cpu -L eks.amazonaws.com/instance-memory -L node.kubernetes.io/instance-type -L topology.kubernetes.io/zone
+```
+
+## Test deploy
+
+```
+kubectl apply -f inflate.yaml
+```
+
+## Show pods
+
+```
+kubectl get pods -o wide
+```
+
+## Scale up
+
+```
+kubectl scale deployment inflate --replicas 2
+```
+
+## Scale down
+
+```
+kubectl scale deployment inflate --replicas 1
+```
+
+## Watch event/logs in Kubernetes
+
+```
+kubectl get events -w --sort-by '.lastTimestamp'
+```
+
+## See pod resource requirements
+
+```
+kubectl get pod -l app=inflate -o jsonpath='{.items[*].spec.containers[*].resources}'
+```
+
+## Show node
+
+```
+kubectl describe node <node>
+```
+
+## Delete deploy
+
+```
+kubectl delete -f inflate.yaml
+```
+
 # Original Example README from here - EKS Auto Mode Example
 
 ## Usage
