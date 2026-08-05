@@ -32,7 +32,7 @@ module "eks" {
   name                   = "${local.tenant}-eks"
   kubernetes_version     = local.kubernetes_version
 
-  #endpoint_public_access = true
+  endpoint_public_access = true
 
   enable_irsa        = false
 
